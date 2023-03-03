@@ -14,7 +14,7 @@ I think it's a little easier to express "keep going." It's very similar to when 
 It's not more difficult, but definitely more wordy to express different options in states. Part of this comes from what I do consider more difficult in my design - expressing specifics about surroundings. If we imagine the room like a set of roads, the empty room for example becomes just one big grid system which can be difficult to conceptualize, especially if most of the time you just need to know if the road ahead of you is clear. For my design right now, it obfuscates that information unless it becomes pertinent (which is similar to the original picobot with the wildcard) but makes an instruction more verbose if it needs to get added in.
 
 ## On a scale of 1–10 (where 10 is “very different”), how different is your syntax from PicoBot’s original design?
-I'm going to say 5 because truthfully it is very different, but it is able to faithfully encode all the same information about state and direction to move.
+I'm going to say 7 because it is a different language - it's trying a new way to think about maze-navigation and so demands a new way to write it. It's a lot more verbose and uses words rather than more short-hand notation. It's not completely different because it maps a lot of the information in the same order (given surroundings, what's the movement and state). I did try making it even more different, but keeping it this way made it feel more intuitive as driving directions to me, and so I kept it.
 
 ## Is there anything you would improve about your design?
 I'd like to streamline some of the "crossroads" (for lack of a better term) cases, but I'm unsure how well that will work within the road trip direction design.
