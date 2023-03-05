@@ -1,13 +1,13 @@
 # Empty room program for a road trip themed picobot implementation
 
-While there's road ahead, drive west on route 1
+While there's road ahead, stay west on route 1
 when the road ends, turn north onto route 2
 
-while there's road ahead, drive north on route 2
+while there's road ahead, stay north on route 2
 when the road ends, turn south on route 3
 
-while there's road ahead, drive south on route 3
+while there's road ahead, stay south on route 3
 when the road ends, turn east on route 4
 
-while there's road ahead, drive south on route 4
+while there's road ahead, stay south on route 4
 when the road ends, turn east on route 3
