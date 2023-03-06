@@ -8,7 +8,7 @@ object PiconotParser extends JavaTokenParsers {
     // parsing interface
     def apply(s: String): ParseResult[List[Rule]] = parseAll(rules, s)
 
-    def rules: Parser[List[Rule]] = * rule
+    def rules: Parser[List[Rule]] = rule*
 
     // rules - need cases for any number of directions and if or not the state changes, and for if you turn or brake
     def rule: Parser[Rule] =
@@ -64,7 +64,7 @@ object PiconotParser extends JavaTokenParsers {
         | "brake" ^^ {case "brake" => StayHere}
 
     def state: Parser[State] =
-        success()
+        wholeNumber ^^ {case n => State(n)}
     
     
 }

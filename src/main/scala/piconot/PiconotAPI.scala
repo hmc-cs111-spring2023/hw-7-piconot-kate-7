@@ -6,16 +6,12 @@ import java.io.File
 
 // basic error message
 def error(message: String): String =
-  s"${RESET}${RED}[Error] ${message}${RESET}"
+  message
 
 // 
-def simulateMaze(ast: List[Rule]): String =
-  try {
-    val emptyMaze = Maze("resources" + File.separator + "empty.txt")
-    TextSimulation(emptyMaze, ast)
-  } catch {
-     println(error("simulation didn't work"))
-  }
+def simulateMaze(ast: List[Rule]) =
+  val emptyMaze = Maze("resources" + File.separator + "empty.txt")
+  TextSimulation(emptyMaze, ast)
 
 // parse a 
 def parseAndEvalLine(input: String) =
@@ -26,7 +22,7 @@ def parseAndEvalLine(input: String) =
 /** Parse a file and potentially evaluate it */
 def runFile(filename: String): Unit =
   try {
-    val input = Source.fromFile(filename).mkString
+    val input = io.Source.fromFile(filename).mkString
     parseAndEvalLine(input)
   } catch {
     case e: java.io.FileNotFoundException => println(error(e.getMessage))
