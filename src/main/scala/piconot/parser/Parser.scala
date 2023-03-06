@@ -17,7 +17,7 @@ object PiconotParser extends JavaTokenParsers {
             case d ~ s => Rule(s, DriveStraight(d),d,s) } // direction same way that picodrive is moving, same state
         | "while there is road ahead, get off route" ~> state ~ ("to continue" ~> dir ~ ("onto route" ~> state)) ^^ {
             case s_old ~ (d ~ s_new) => Rule(s_old, DriveStraight(d), d, s_new) } // direction the same, but state changes
-        | "when the"  ~> dir  ~ ("road ends, get off" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state))) ^^ {
+        | "when the"  ~> dir  ~ ("road ends, get off route" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state))) ^^ {
             case d_old ~ (s_old ~  (d ~  s_new)) => Rule(s_old, RoadEnds(d_old), d, s_new) } // changing state And direction because ahead direction is blocked
         | "when the" ~> dir ~ ("road ends, turn" ~> dir ~ ("to continue on route" ~> state)) ^^ {
             case d_old ~ (d_new ~  s) => Rule(s, RoadEnds(d_old), d_new, s) } // changing direction but not state
@@ -31,7 +31,7 @@ object PiconotParser extends JavaTokenParsers {
             case d_closed ~ (d ~ s) => Rule(s, RoadClosed(d, d_closed), d, s) } // not changing direction, no state change, one road closure
         | "while there is road ahead, and the" ~> dir ~ ("road is closed, get off route" ~> state ~ ("to continue" ~> dir ~ ("onto route" ~> state))) ^^ {
             case d_closed ~ (s_old ~ (d ~ s_new)) => Rule(s_old, RoadClosed(d, d_closed), d, s_new) } // not changing direction, state change, one road closure
-        | "when the"  ~> dir  ~ ("road ends, and the" ~> dir ~ ("road is closed, get off" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state)))) ^^ {
+        | "when the"  ~> dir  ~ ("road ends, and the" ~> dir ~ ("road is closed, get off route" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state)))) ^^ {
             case d_old ~ (d_closed ~ (s_old ~  (d ~  s_new))) => Rule(s_old, TwoClosedOneOpen(d, d_old, d_closed), d, s_new) } // changing state And direction, two road closures
         | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("road is closed, turn" ~> dir ~ ("to continue on route" ~> state))) ^^ {
             case d_old ~ (d_closed ~ (d_new ~  s)) => Rule(s, TwoClosedOneOpen(d_new, d_old, d_closed), d_new, s) } // changing direction but not state, two road closure
@@ -45,7 +45,7 @@ object PiconotParser extends JavaTokenParsers {
             case d_closed ~ (d_closed_2 ~ (d ~ s)) => Rule(s, TwoClosedOneOpen(d, d_closed, d_closed_2), d, s) } // not changing direction, no state change, two road closures
         | "while there is road ahead, and the" ~> dir ~ ("and" ~> dir ~ ("roads are closed, get off route" ~> state ~ ("to continue" ~> dir ~ ("onto route" ~> state)))) ^^ {
             case d_closed ~ (d_closed_2 ~ (s_old ~ (d ~ s_new))) => Rule(s_old, TwoClosedOneOpen(d, d_closed, d_closed_2), d, s_new) } // not changing direction, state change, two road closures
-        | "when the"  ~> dir  ~> ("road ends, and the" ~> dir ~> ("and" ~> dir ~> ("roads are closed, get off" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state))))) ^^ {
+        | "when the"  ~> dir  ~> ("road ends, and the" ~> dir ~> ("and" ~> dir ~> ("roads are closed, get off route" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state))))) ^^ {
             case s_old ~  (d ~  s_new) => Rule(s_old, ThreeRoadsClosed(d), d, s_new) } // changing state And direction, three road closures
         | "when the" ~> dir ~> ("road ends, and the" ~> dir ~> ("and" ~> dir ~> ("roads are closed, turn" ~> dir ~ ("to continue on route" ~> state)))) ^^ {
             case d ~  s => Rule(s, ThreeRoadsClosed(d), d, s) } // changing direction but not state, three road closures
