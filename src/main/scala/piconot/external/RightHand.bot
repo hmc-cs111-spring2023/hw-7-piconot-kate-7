@@ -1,0 +1,15 @@
+while there is road ahead, get off route 0 to continue East onto route 1
+when the East road ends, turn North to continue on route 0
+when the North road ends, and the East road is closed, stop to get off route 0 and turn South onto route 3
+
+while there is road ahead, get off route 1 to continue South onto route 3
+when the South road ends, turn East to continue on route 1
+when the East road ends, and the South road is closed, stop to get off route 1 and turn West onto route 2
+
+while there is road ahead, get off route 2 to continue North onto route 0
+when the North road ends, turn West to continue on route 2
+when the West road ends, and the North road is closed, stop to get off route 2 and turn East onto route 1
+
+while there is road ahead, get off route 3 to continue West onto route 2
+when the West road ends, turn South to continue on route 3
+when the South road ends, and the West road is closed, stop to get off route 3 and turn North onto route 0
