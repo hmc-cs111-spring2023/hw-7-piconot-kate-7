@@ -13,7 +13,7 @@ object PiconotParser extends JavaTokenParsers {
     // rules - need cases for any number of directions and if or not the state changes, and for if you turn or brake
     def rule: Parser[Rule] =
         // only one piece of surroundings information
-        "while there is road ahead, continue" ~> dir ~ ("on route" ~> state) ^^ {
+        ( "while there is road ahead, continue" ~> dir ~ ("on route" ~> state) ^^ {
             case d ~ s => Rule(s, DriveStraight(d),d,s) } // direction same way that picodrive is moving, same state
         | "while there is road ahead, get off route" ~> state ~ ("to continue" ~> dir ~ ("onto route" ~> state)) ^^ {
             case s_old ~ d ~ s_new => Rule(s_old, DriveStraight(d), d, s_new) } // direction the same, but state changes
@@ -52,7 +52,7 @@ object PiconotParser extends JavaTokenParsers {
         | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("and" ~> dir ~ ("roads are closed," ~> dir ~ ("to continue on route" ~> state)))) ^^ {
             case d_old ~ d_closed ~ d_closed_2 ~ brake ~ s => Rule(s, StayThreeRoads(d_old, d_closed, d_closed_2), brake, s) } // not moving, nor changing state, three road closures
         | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("and" ~> dir ~ ("roads are closed," ~> dir ~ ("to get off route" ~> state ~ ("and get onto route" ~> state))))) ^^ {
-            case d_old ~ d_closed ~ d_closed_2 ~ brake ~ s_old ~ s_new => Rule(s_old, StayThreeRoads(d_old, d_closed, d_closed_2), brake, s_new) } // not moving, but yes changing state
+            case d_old ~ d_closed ~ d_closed_2 ~ brake ~ s_old ~ s_new => Rule(s_old, StayThreeRoads(d_old, d_closed, d_closed_2), brake, s_new) } )// not moving, but yes changing state
 
         
     
@@ -64,7 +64,7 @@ object PiconotParser extends JavaTokenParsers {
         | "brake" ^^ {case "brake" => StayHere}
 
     def state: Parser[State] =
-        wholeNumber ^^ {case n => State(n)}
+        success()
     
     
 }
@@ -134,7 +134,7 @@ def StayThreeRoads(dir1: MoveDirection, dir2: MoveDirection, dir3: MoveDirection
         => Surroundings(Blocked, Open, Blocked, Blocked)
     case (North, East, South) | (North, South, East) | (East, North, South) | (East, South, North) | (South, East, North) | (South, North, East)
         => Surroundings(Blocked, Blocked, Open, Blocked)
-    case (North, East, West) | (North, West, East) | (East, North, West) | (East, West, North) | (West, North, East) | (West, Eeast, North)
+    case (North, East, West) | (North, West, East) | (East, North, West) | (East, West, North) | (West, North, East) | (West, East, North)
         => Surroundings(Blocked, Blocked, Blocked, Open)
 
 
