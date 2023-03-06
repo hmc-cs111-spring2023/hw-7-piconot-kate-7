@@ -9,18 +9,19 @@ def error(message: String): String =
   s"${RESET}${RED}[Error] ${message}${RESET}"
 
 // 
-def simulateMaze(ast: Maze): String =
+def simulateMaze(ast: List[Rule]): String =
   try {
-    eval(ast).toString
+    val emptyMaze = Maze("resources" + File.separator + "empty.txt")
+    TextSimulation(emptyMaze, ast)
   } catch {
-    case e: ArithmeticException => error(e.getMessage)
+     println(error("simulation didn't work"))
   }
 
 // parse a 
 def parseAndEvalLine(input: String) =
-  CalcParser(input) match
-    case CalcParser.Success(ast, _) => println(simulateMaze(ast))
-    case e: CalcParser.NoSuccess    => println(error(e.toString))
+  PiconotParser(input) match
+    case PiconotParser.Success(ast, _) => println(simulateMaze(ast))
+    case e: PiconotParser.NoSuccess    => println(error(e.toString))
 
 /** Parse a file and potentially evaluate it */
 def runFile(filename: String): Unit =

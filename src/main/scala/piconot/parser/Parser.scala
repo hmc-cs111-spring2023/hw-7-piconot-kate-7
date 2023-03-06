@@ -6,14 +6,16 @@ import picolib.semantics._
 
 object PiconotParser extends JavaTokenParsers {
     // parsing interface
-    def apply(s: String): ParseResult[Rule] = parseAll(rule, s)
+    def apply(s: String): ParseResult[List[Rule]] = parseAll(rules, s)
+
+    def rules: Parser[List[Rule]] = * rule
 
     // rules - need cases for any number of directions and if or not the state changes, and for if you turn or brake
     def rule: Parser[Rule] =
         // only one piece of surroundings information
         "while there is road ahead, continue" ~> dir ~ ("on route" ~> state) ^^ {
             case d ~ s => Rule(s, DriveStraight(d),d,s) } // direction same way that picodrive is moving, same state
-        | "while there is road ahead, get off route" ~> state ~ ("to continue" ~> dir ~ ("on route" ~> state)) ^^ {
+        | "while there is road ahead, get off route" ~> state ~ ("to continue" ~> dir ~ ("onto route" ~> state)) ^^ {
             case s_old ~ d ~ s_new => Rule(s_old, DriveStraight(d), d, s_new) } // direction the same, but state changes
         | "when the"  ~> dir  ~ ("road ends, get off" ~> state ~ ("and turn" ~> dir ~ ("onto route" ~> state))) ^^ {
             case d_old ~ s_old ~  d ~  s_new => Rule(s_old, RoadEnds(d_old), d, s_new) } // changing state And direction because ahead direction is blocked
@@ -21,7 +23,7 @@ object PiconotParser extends JavaTokenParsers {
             case d_old ~ d_new ~  s => Rule(s, RoadEnds(d_old), d_new, s) } // changing direction but not state
         | "when the" ~> dir ~ ("road ends," ~> dir ~ ("to continue on route" ~> state)) ^^ {
             case d_old ~ brake ~ s => Rule(s, RoadEnds(d_old), brake, s) } // not moving, nor changing state
-        | "when the" ~> dir ~ ("road ends," ~> dir ~("to get off route" ~> state ~ ("and get on route" ~> state))) ^^ {
+        | "when the" ~> dir ~ ("road ends," ~> dir ~("to get off route" ~> state ~ ("and get onto route" ~> state))) ^^ {
             case d_old ~ brake ~ s_old ~ s_new => Rule(s_old, RoadEnds(d_old), brake, s_new) } // not moving, but yes changing state
         
         // two pieces of surroundings information (given one closure, one either stays open or become closed)
@@ -35,7 +37,7 @@ object PiconotParser extends JavaTokenParsers {
             case d_old ~ d_closed ~ d_new ~  s => Rule(s, TwoClosedOneOpen(d_new, d_old, d_closed), d_new, s) } // changing direction but not state, two road closure
         | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("road is closed," ~> dir ~ ("to continue on route" ~> state))) ^^ {
             case d_old ~ d_closed ~ brake ~ s => Rule(s, TwoRoadsClosed(d_old, d_closed), brake, s) } // not moving, nor changing state, two road closures
-        |  "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("road is closed," ~> dir ~ ("to get off route" ~> state ~ ("and get on route" ~> state)))) ^^ {
+        |  "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("road is closed," ~> dir ~ ("to get off route" ~> state ~ ("and get onto route" ~> state)))) ^^ {
             case d_old ~ d_closed ~ brake ~ s_old ~ s_new => Rule(s_old, TwoRoadsClosed(d_old, d_closed), brake, s_new) } // not moving, but yes changing state
         
         // three pieces of surroundings information (given two closures, one either stays open or become closed)
@@ -49,7 +51,7 @@ object PiconotParser extends JavaTokenParsers {
             case d ~  s => Rule(s, ThreeRoadsClosed(d), d, s) } // changing direction but not state, three road closures
         | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("and" ~> dir ~ ("roads are closed," ~> dir ~ ("to continue on route" ~> state)))) ^^ {
             case d_old ~ d_closed ~ d_closed_2 ~ brake ~ s => Rule(s, StayThreeRoads(d_old, d_closed, d_closed_2), brake, s) } // not moving, nor changing state, three road closures
-        | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("and" ~> dir ~ ("roads are closed," ~> dir ~ ("to get off route" ~> state ~ ("and get on route" ~> state))))) ^^ {
+        | "when the" ~> dir ~ ("road ends, and the" ~> dir ~ ("and" ~> dir ~ ("roads are closed," ~> dir ~ ("to get off route" ~> state ~ ("and get onto route" ~> state))))) ^^ {
             case d_old ~ d_closed ~ d_closed_2 ~ brake ~ s_old ~ s_new => Rule(s_old, StayThreeRoads(d_old, d_closed, d_closed_2), brake, s_new) } // not moving, but yes changing state
 
         
