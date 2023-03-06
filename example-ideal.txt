@@ -9,5 +9,5 @@ when the road ends, turn south on route 3
 while there's road ahead, stay south on route 3
 when the road ends, turn east on route 4
 
-while there's road ahead, stay south on route 4
+while there's road ahead, stay north on route 4
 when the road ends, turn east on route 3
