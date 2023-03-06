@@ -26,6 +26,9 @@ i changed "stay" to "continue" just because i liked it better
 
 Any incongruities with direction, actual roads aren't much better (;
 
+
+okayyy so I finished the parser and it works, but I have too much ambiguity in the places where you are supposed to stay because you still need to specificy that the new direction you are turning is open. So i need to add a way to write that back into my language. I added a turn statement for when the state changes but picobot doesn't move - that way there is a distinguishment in Surroundings. I also changed the functions I was calling to map the Surroundings, so that it has the explicit "open" for when turning, rather than "anything" as the default all the time
+
 **On a scale of 1–10 (where 10 is "a lot"), how much did you have to change your syntax?**
 
 **On a scale of 1–10 (where 10 is "very difficult"), how difficult was it to map your syntax to the provided API?**
