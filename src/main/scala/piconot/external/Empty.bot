@@ -1,11 +1,11 @@
-while there is road ahead, continue west on route 1
-when the west road ends, get off route 1 and turn north onto route 2
+while there is road ahead, continue West on route 1
+when the West road ends, get off route 1 and turn North onto route 2
 
-while there is road ahead, continue north on route 2
-when the north road ends, get off route 2 and turn south onto route 3
+while there is road ahead, continue North on route 2
+when the North road ends, get off route 2 and turn South onto route 3
 
-while there is road ahead, continue south on route 3
-when the south road ends, get off route 3 and turn east onto route 4
+while there is road ahead, continue South on route 3
+when the South road ends, get off route 3 and turn East onto route 4
 
-while there is road ahead, continue north on route 4
-when the north road ends, get off route 4 and turn east onto route 3
+while there is road ahead, continue North on route 4
+when the North road ends, get off route 4 and turn East onto route 3
