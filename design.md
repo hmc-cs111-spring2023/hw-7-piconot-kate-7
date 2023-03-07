@@ -18,3 +18,25 @@ I'm going to say 7 because it is a different language - it's trying a new way to
 
 ## Is there anything you would improve about your design?
 I'd like to streamline some of the "crossroads" (for lack of a better term) cases, but I'm unsure how well that will work within the road trip direction design.
+
+
+## Final Design + Instructions
+- everything is lowercase except for directions.
+- cardinal directions are the same, but use "stop" instead of "StayHere"
+
+There are six main cases to consider, with their base statements below
+- whether you're moving in the same direction and do not change state
+    - while there is road ahead, continue direction on route num
+- whether you're moving in the same direction and do change state
+    - while there is road ahead, get off route num and turn direction onto route num
+- whether you're changing direction and do not change state
+    - when the direction road ends, turn direction to continue on route num
+- whether you're changing direction and do change state
+    - when the direction road ends, get off route num and turn direction onto route num
+- whether you're stopping and do not change state
+    - when the direction road ends, stop to continue on route num
+- whether you're stopping and do change state
+    - when the direction road ends, stop to get off route num and turn onto route num
+
+If you want to add more roads that are closed, you can add after the initial road statement either "and the direction road is closed" or "and the direction and direction roads are closed"
+- i.e. "when the West road ends, and the North road is closed, stop to get off route 2 and turn East onto route 1"
